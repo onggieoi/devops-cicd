@@ -7,7 +7,7 @@ void call() {
     String demoRegistry = "361555779387.dkr.ecr.ap-southeast-1.amazonaws.com"
     String awsRegion = "ap-south-1"
     String ecrRegistryUrl = "https://361555779387.dkr.ecr.ap-southeast-1.amazonaws.com"
-    String awsCredential = 'aws-credentials'
+    String awsCredential = '580b3199-ef75-435e-99d0-c48ddd22883a'
 
 //========================================================================
 //========================================================================
@@ -43,7 +43,6 @@ void call() {
     }
 
     stage ("Push Docker Images") {
-        echo "Push Docker Images"
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
             sh "docker tag ecr-duccao-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-duccao-devops-${name}:${BUILD_NUMBER}"
             sh "docker push ${demoRegistry}/ecr-duccao-devops-${name}:${BUILD_NUMBER}"
