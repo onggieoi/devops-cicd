@@ -26,7 +26,7 @@ void call() {
     }
 
     stage ("Build Solution") {
-        docker.build("ecr-duccao-${name}:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
+        docker.build("ecr-duccao-devops-${name}:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
         --build-arg BASEIMG=${baseImage} --build-arg IMG_VERSION=${baseTag} ${WORKSPACE}/src/${buildFolder}") 
     }
 
