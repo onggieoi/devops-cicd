@@ -50,7 +50,7 @@ void call(Map pipelineParams) {
                 }
                 steps {
                     script {
-                        buildFrontend()
+                        buildFrontEnd()
                     }
                 }
             }
