@@ -26,7 +26,7 @@ void call() {
     }
 
     stage ("Build Solution") {
-        docker.build("ecr-duccao-devops-${name}:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
+        docker.build("ecr-nashtech-devops:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
         --build-arg BASEIMG=${baseImage} --build-arg IMG_VERSION=${baseTag} ${WORKSPACE}/src/${buildFolder}") 
     }
 
@@ -44,10 +44,10 @@ void call() {
 
     stage ("Push Docker Images") {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
-            sh "docker tag ecr-duccao-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-duccao-devops-${name}:${BUILD_NUMBER}"
-            sh "docker push ${demoRegistry}/ecr-duccao-devops-${name}:${BUILD_NUMBER}"
-            sh "docker tag ${demoRegistry}/ecr-duccao-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-duccao-devops-${name}:latest"
-            sh "docker push ${demoRegistry}/ecr-duccao-devops-${name}:latest"
+            sh "docker tag ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
+            sh "docker push ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
+            sh "docker tag ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:latest"
+            sh "docker push ${demoRegistry}/ecr-nashtech-devops:latest"
         }
     }
 
