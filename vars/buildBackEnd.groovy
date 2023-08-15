@@ -5,7 +5,7 @@ void call() {
     String baseImage     = "node"
     String baseTag       = "lts-buster"
     String demoRegistry = "361555779387.dkr.ecr.ap-southeast-1.amazonaws.com"
-    String awsRegion = "ap-south-1"
+    String awsRegion = "ap-southeast-1"
     String ecrRegistryUrl = "https://361555779387.dkr.ecr.ap-southeast-1.amazonaws.com"
     String awsCredential = 'aws-credential'
 
