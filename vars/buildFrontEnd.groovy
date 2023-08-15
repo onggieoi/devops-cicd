@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 void call() {
-    String name = "backend"
-    String buildFolder = "backend"
+    String name = "frontend"
+    String buildFolder = "frontend"
     String baseImage     = "node"
     String baseTag       = "lts-buster"
     String demoRegistry = "361555779387.dkr.ecr.ap-southeast-1.amazonaws.com"
@@ -27,7 +27,7 @@ void call() {
     }
 
     stage ("Build Solution") {
-        docker.build("ecr-nashtech-devops:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
+        docker.build("ecr-nashtech-devops-${name}:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
         --build-arg BASEIMG=${baseImage} --build-arg IMG_VERSION=${baseTag} ${WORKSPACE}/src/${buildFolder}") 
     }
 
@@ -45,10 +45,10 @@ void call() {
 
     stage ("Push Docker Images") {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
-            sh "docker tag ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
-            sh "docker push ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
-            sh "docker tag ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:latest"
-            sh "docker push ${demoRegistry}/ecr-nashtech-devops:latest"
+            sh "docker tag ecr-nashtech-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER}"
+            sh "docker push ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER}"
+            sh "docker tag ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops-${name}:latest"
+            sh "docker push ${demoRegistry}/ecr-nashtech-devops-${name}:latest"
         }
     }
 
@@ -59,7 +59,7 @@ void call() {
         }
     }
 
-    stage ("Deploy BackEnd To K8S") {
+    stage ("Deploy frontend To K8S") {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
             sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
             envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
