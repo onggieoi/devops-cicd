@@ -5,11 +5,10 @@ ENV DANGEROUSLY_DISABLE_HOST_CHECK=true
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app
 # COPY package-lock.json /usr/src/app
-RUN npm set registry=https://registry.npmjs.org/
-RUN npm config set registry http://registry.npmjs.org/
-RUN npm config rm proxy
-RUN npm config rm https-proxy
-RUN yarn
+# RUN npm set registry=https://registry.npmjs.org/
+# RUN npm config set registry http://registry.npmjs.org/
+RUN yarn cache clean
+RUN yarn install --network-timeout 1000000
 COPY . /usr/src/app
 EXPOSE 3000
 CMD ["yarn", "start"]
