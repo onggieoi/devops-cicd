@@ -59,18 +59,8 @@ void call() {
         }
     }
 
-    // stage ("Deploy frontend To K8S") {
-    //     docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
-    //         sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
-    //         envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
-    //         sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
-    //         sh "kubectl apply -f deployment.yml"
-    //         sh "kubectl apply -f service.yml"
-    //     }
-    // }
-
     stage ("Deploy frontend To K8S") {
-        withAWS(region:${awsRegion},credentials:${awsCredential}) {
+        docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
             sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
             envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
             sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
@@ -78,6 +68,16 @@ void call() {
             sh "kubectl apply -f service.yml"
         }
     }
+
+    // stage ("Deploy frontend To K8S") {
+    //     withAWS(region:${awsRegion},credentials:${awsCredential}) {
+    //         sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
+    //         envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
+    //         sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
+    //         sh "kubectl apply -f deployment.yml"
+    //         sh "kubectl apply -f service.yml"
+    //     }
+    // }
 }
 
 //========================================================================
