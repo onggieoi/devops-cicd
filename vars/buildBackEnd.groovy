@@ -18,46 +18,52 @@ void call() {
 
     stage ('Prepare Package') {
         script {
-            writeFile file: '.ci/Dockerfile', text: libraryResource('node/Dockerfile')
+            sh "whoami"
         }
     }
 
-    stage('SonarQube analysis') {
-        echo "Run SonarQube Analysis"
-    }
+    // stage ('Prepare Package') {
+    //     script {
+    //         writeFile file: '.ci/Dockerfile', text: libraryResource('node/Dockerfile')
+    //     }
+    // }
 
-    stage ("Build Solution") {
-        docker.build("ecr-nashtech-devops:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
-        --build-arg BASEIMG=${baseImage} --build-arg IMG_VERSION=${baseTag} ${WORKSPACE}/src/${buildFolder}") 
-    }
+    // stage('SonarQube analysis') {
+    //     echo "Run SonarQube Analysis"
+    // }
 
-    stage ('Run Unit Tests') {
-        echo "Run Unit Tests"
-    }
+    // stage ("Build Solution") {
+    //     docker.build("ecr-nashtech-devops:${BUILD_NUMBER}", " -f ./.ci/Dockerfile \
+    //     --build-arg BASEIMG=${baseImage} --build-arg IMG_VERSION=${baseTag} ${WORKSPACE}/src/${buildFolder}") 
+    // }
 
-    stage ('Run Integration Tests') {
-        echo "Run Integration Tests"
-    }
+    // stage ('Run Unit Tests') {
+    //     echo "Run Unit Tests"
+    // }
 
-    stage ('Process Test Results') {
-        echo "Export Test Results"
-    }
+    // stage ('Run Integration Tests') {
+    //     echo "Run Integration Tests"
+    // }
 
-    stage ("Push Docker Images") {
-        docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
-            sh "docker tag ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
-            sh "docker push ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
-            sh "docker tag ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:latest"
-            sh "docker push ${demoRegistry}/ecr-nashtech-devops:latest"
-        }
-    }
+    // stage ('Process Test Results') {
+    //     echo "Export Test Results"
+    // }
 
-    stage ('Prepare Package') {
-        script {
-            writeFile file: '.ci/service/deployment.yml', text: libraryResource('deploy/eks/service/deployment-backend.yml')
-            writeFile file: '.ci/service/service.yml', text: libraryResource('deploy/eks/service/service.yml')
-        }
-    }
+    // stage ("Push Docker Images") {
+    //     docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
+    //         sh "docker tag ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
+    //         sh "docker push ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER}"
+    //         sh "docker tag ${demoRegistry}/ecr-nashtech-devops:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops:latest"
+    //         sh "docker push ${demoRegistry}/ecr-nashtech-devops:latest"
+    //     }
+    // }
+
+    // stage ('Prepare Package') {
+    //     script {
+    //         writeFile file: '.ci/service/deployment.yml', text: libraryResource('deploy/eks/service/deployment-backend.yml')
+    //         writeFile file: '.ci/service/service.yml', text: libraryResource('deploy/eks/service/service.yml')
+    //     }
+    // }
 
     // stage ("Deploy BackEnd To K8S") {
     //     docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
@@ -75,15 +81,15 @@ void call() {
     //     }
     // }
     
-    stage ("Deploy BackEnd To K8S") {
-        script {
-            sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
-                envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
-            sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
-            sh "/usr/local/bin/kubectl apply -f deployment.yml"
-            sh "/usr/local/bin/kubectl apply -f service.yml"
-        }
-    }
+    // stage ("Deploy BackEnd To K8S") {
+    //     script {
+    //         sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
+    //             envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
+    //         sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
+    //         sh "/usr/local/bin/kubectl apply -f deployment.yml"
+    //         sh "/usr/local/bin/kubectl apply -f service.yml"
+    //     }
+    // }
 }
 
 //========================================================================
