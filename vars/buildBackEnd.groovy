@@ -86,8 +86,8 @@ void call() {
             sh "kubectl auth can-i '*' '*' --all-namespaces"
             sh "kubectl config view --minify"
             sh "kubectl get nodes"
-            sh "kubectl apply -f deployment.yml"
-            sh "kubectl apply -f service.yml"
+            sh "/usr/local/bin/kubectl apply -f deployment.yml"
+            sh "/usr/local/bin/kubectl apply -f service.yml"
         }
     }
 }
