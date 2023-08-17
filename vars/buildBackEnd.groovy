@@ -80,12 +80,6 @@ void call() {
             sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
                 envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
             sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
-            sh "kubectl config get-contexts"
-            sh "kubectl config current-context"
-            sh "kubectl version"
-            sh "kubectl auth can-i '*' '*' --all-namespaces"
-            sh "kubectl config view --minify"
-            sh "kubectl get nodes"
             sh "/usr/local/bin/kubectl apply -f deployment.yml"
             sh "/usr/local/bin/kubectl apply -f service.yml"
         }
