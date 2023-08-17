@@ -35,25 +35,25 @@ void call(Map pipelineParams) {
                 }
             }
 
-            // stage ('Build Frontend') {
-            //     when {
-            //         allOf {
-            //             anyOf{
-            //                 anyOf {
-            //                     branch 'master'
-            //                 }
-            //                 allOf{
-            //                     changeset "src/frontend/**"
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     steps {
-            //         script {
-            //             buildFrontEnd()
-            //         }
-            //     }
-            // }
+            stage ('Build Frontend') {
+                when {
+                    allOf {
+                        anyOf{
+                            anyOf {
+                                branch 'master'
+                            }
+                            allOf{
+                                changeset "src/frontend/**"
+                            }
+                        }
+                    }
+                }
+                steps {
+                    script {
+                        buildFrontEnd()
+                    }
+                }
+            }
         }
 
         post {
