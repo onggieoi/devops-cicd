@@ -23,7 +23,7 @@ void call(Map pipelineParams) {
                             }
                             // Manual Run: Only if checked.
                             allOf{
-                                changeset "src/backend/**"
+                                changeset "**/backend/**"
                             }
                         }
                     }
@@ -43,7 +43,7 @@ void call(Map pipelineParams) {
                                 branch 'master'
                             }
                             allOf{
-                                changeset "src/frontend/**"
+                                changeset "**/frontend/**"
                             }
                         }
                     }
