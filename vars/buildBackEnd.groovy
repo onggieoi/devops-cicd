@@ -54,7 +54,7 @@ void call() {
 
     stage ('Prepare Package') {
         script {
-            writeFile file: '.ci/service/deployment.yml', text: libraryResource('deploy/eks/service/deployment.yml')
+            writeFile file: '.ci/service/deployment.yml', text: libraryResource('deploy/eks/service/deployment-backend.yml')
             writeFile file: '.ci/service/service.yml', text: libraryResource('deploy/eks/service/service.yml')
         }
     }

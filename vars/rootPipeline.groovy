@@ -12,28 +12,28 @@ void call(Map pipelineParams) {
         }
         
         stages {
-            // stage ('Build Backend') {
-            //     when {
-            //         allOf {
-            //             // Condition Check
-            //             anyOf{
-            //                 // Branch Event: Nornal Flow
-            //                 anyOf {
-            //                     branch 'master'
-            //                 }
-            //                 // Manual Run: Only if checked.
-            //                 allOf{
-            //                     changeset "src/backend/**"
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     steps {
-            //         script {
-            //             buildBackEnd()
-            //         }
-            //     }
-            // }
+            stage ('Build Backend') {
+                when {
+                    allOf {
+                        // Condition Check
+                        anyOf{
+                            // Branch Event: Nornal Flow
+                            anyOf {
+                                branch 'master'
+                            }
+                            // Manual Run: Only if checked.
+                            allOf{
+                                changeset "src/backend/**"
+                            }
+                        }
+                    }
+                }
+                steps {
+                    script {
+                        buildBackEnd()
+                    }
+                }
+            }
 
             stage ('Build Frontend') {
                 when {
