@@ -61,7 +61,7 @@ void call() {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
             sh "export registry=${demoRegistry}; export appname=${name}; export tag=${BUILD_NUMBER}; \
             envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
-            sh "echo deployment.yml"
+            sh "cat deployment.yml"
             sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
             sh "kubectl apply -f deployment.yml"
             sh "kubectl apply -f service.yml"
