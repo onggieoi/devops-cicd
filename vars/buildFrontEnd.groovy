@@ -47,8 +47,6 @@ void call() {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
             sh "docker tag ecr-nashtech-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER}"
             sh "docker push ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER}"
-            sh "docker tag ${demoRegistry}/ecr-nashtech-devops-${name}:${BUILD_NUMBER} ${demoRegistry}/ecr-nashtech-devops-${name}:latest"
-            sh "docker push ${demoRegistry}/ecr-nashtech-devops-${name}:latest"
         }
     }
 
@@ -61,7 +59,7 @@ void call() {
 
     stage ("Deploy frontend To K8S") {
         docker.withRegistry(ecrRegistryUrl, "ecr:${awsRegion}:${awsCredential}") {
-            sh "export registry=${demoRegistry}; export appname=${name}; export tag=latest; \
+            sh "export registry=${demoRegistry}; export appname=${name}; export tag=${BUILD_NUMBER}; \
             envsubst < .ci/service/deployment.yml > deployment.yml; envsubst < .ci/service/service.yml > service.yml"
             sh "aws eks --region ${awsRegion} update-kubeconfig --name ${eksName}"
             sh "kubectl apply -f deployment.yml"
